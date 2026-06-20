@@ -1,0 +1,53 @@
+from flask import Flask, render_template, request, jsonify
+from googletrans import Translator
+from gtts import gTTS
+import os
+import uuid
+
+app = Flask(__name__)
+
+translator = Translator()
+
+# Language mapping
+lang_map = {
+    'te': 'te',
+    'hi': 'hi',
+    'ma': 'mr',
+    'sp': 'es',
+    'ge': 'de'
+}
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/translate', methods=['POST'])
+def translate_text():
+    data = request.json
+    text = data.get('text')
+    lang = data.get('language')
+
+    target_lang = lang_map.get(lang, 'en')
+    translated = translator.translate(text, dest=target_lang)
+    return jsonify({'translated_text': translated.text})
+
+@app.route('/speak', methods=['POST'])
+def speak_text():
+    data = request.json
+    text = data.get('text')
+    lang = 'en'  # default language
+
+    # Try to detect the language from translated input
+    try:
+        lang = translator.detect(text).lang
+    except:
+        pass
+
+    tts = gTTS(text=text, lang=lang)
+    filename = f"static/speech_{uuid.uuid4().hex}.mp3"
+    tts.save(filename)
+
+    return jsonify({'audio_url': '/' + filename})
+
+if __name__ == '__main__':
+    app.run(debug=True)

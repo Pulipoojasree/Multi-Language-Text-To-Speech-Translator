@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-Language Text to Speech Converter</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container"> 
+    <h1>Multi-Language Text to Speech Converter</h1>
+
+    <label for="languages">Select Language</label>
+    <select id="languages">
+      <option value="te">Telugu</option>
+      <option value="hi">Hindi</option>
+      <option value="ma">Marathi</option>
+      <option value="sp">Spanish</option>
+      <option value="ge">German</option>
+    </select>
+
+    <div class="text-grid">
+      <div class="field">
+        <label for="inputText">Text</label>
+        <textarea id="inputText" placeholder="Write something here"></textarea>
+      </div>
+      <div class="field">
+        <label for="outputText">Translated Text</label>
+        <textarea id="outputText" placeholder="Translated text will appear here"></textarea>
+      </div>
+    </div>
+
+    <button id="translateBtn" class="btn-small">Translate</button>
+
+    <h2>Text-to-Speech</h2>
+    
+    <div class="button-group">
+      <button id="speakBtn">Play Speech</button>
+      <button id="pauseBtn">Pause/Resume</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='javascript.js') }}"></script>
+</body>
+</html>
